@@ -29,6 +29,9 @@ export default {
           additionalHooks: {
             type: 'string',
           },
+          depsIgnorePattern: {
+            type: 'string',
+          },
           enableDangerousAutofixThisMayCauseInfiniteLoops: {
             type: 'boolean',
           },
@@ -45,6 +48,13 @@ export default {
         ? new RegExp(context.options[0].additionalHooks)
         : undefined;
 
+    const depsIgnorePattern =
+      (context.options &&
+        context.options[0] &&
+        context.options[0].depsIgnorePattern
+        ? new RegExp(context.options[0].depsIgnorePattern)
+        : undefined)
+
     const enableDangerousAutofixThisMayCauseInfiniteLoops =
       (context.options &&
         context.options[0] &&
@@ -53,6 +63,7 @@ export default {
 
     const options = {
       additionalHooks,
+      depsIgnorePattern,
       enableDangerousAutofixThisMayCauseInfiniteLoops,
     };
 
@@ -267,6 +278,8 @@ export default {
               return true;
             }
           }
+        } else if (depsIgnorePattern?.test(name)) {
+          return true;
         }
         // By default assume it's dynamic.
         return false;

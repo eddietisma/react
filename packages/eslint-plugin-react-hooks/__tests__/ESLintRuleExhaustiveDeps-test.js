@@ -535,6 +535,17 @@ const tests = {
     {
       code: normalizeIndent`
         function MyComponent(props) {
+          const dispatch = useDispatch();
+          useEffect(() => {
+            console.log(dispatch);
+          }, [dispatch]);
+        }
+      `,
+      options: [{depsIgnorePattern: '(useDispatch)'}],
+    },
+    {
+      code: normalizeIndent`
+        function MyComponent(props) {
           useWithoutEffectSuffix(() => {
             console.log(props.foo);
           }, []);
